@@ -1,5 +1,8 @@
 <script setup lang="ts">
 import { reactive, ref } from 'vue'
+import { useRouter } from 'vue-router'
+
+const router = useRouter()
 
 const form = reactive({
   email: '',
@@ -8,27 +11,21 @@ const form = reactive({
 })
 
 const emailError = ref('')
+const passwordError = ref('')
 
-const emit = defineEmits<{
-  submit: [payload: { email: string; password: string; rememberMe: boolean }]
-}>()
+const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+const MIN_PASSWORD_LENGTH = 6
 
+function handleSubmit() {
+  emailError.value = EMAIL_REGEX.test(form.email) ? '' : '請輸入正確的電子郵件格式'
+  passwordError.value =
+    form.password.length >= MIN_PASSWORD_LENGTH ? '' : `密碼長度至少需 ${MIN_PASSWORD_LENGTH} 碼`
 
-const API_URL = 'https://api-frontend-interview-server.metcfire.com.tw/'
-
-async function callLoginApi() {
-  const response = await fetch(API_URL, { method: 'GET' })
-  return response.json()
-}
-
-async function handleSubmit() {
-  try {
-    const data = await callLoginApi()
-    console.log(data)
-  } catch (error) {
-    console.error(error)
+  if (emailError.value || passwordError.value) {
+    return
   }
-  emit('submit', { ...form })
+
+  router.push({ name: 'account-management', query: { email: form.email } })
 }
 </script>
 
@@ -70,13 +67,14 @@ async function handleSubmit() {
                   </div>
                   <input
                     id="email"
+                    v-model="form.email"
                     type="email"
                     class="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition"
                     placeholder="your@email.com"
-                    required=""
-                    value=""
+                    required
                   />
                 </div>
+                <p v-if="emailError" class="text-red-600 text-sm mt-1">{{ emailError }}</p>
               </div>
             </div>
             <div class="input-box">
@@ -103,13 +101,14 @@ async function handleSubmit() {
                   </div>
                   <input
                     id="password"
+                    v-model="form.password"
                     type="password"
                     class="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent transition"
                     placeholder="••••••••"
-                    required=""
-                    value=""
+                    required
                   />
                 </div>
+                <p v-if="passwordError" class="text-red-600 text-sm mt-1">{{ passwordError }}</p>
               </div>
             </div>
 
@@ -127,7 +126,7 @@ async function handleSubmit() {
             >
               登入
             </button>
-            <div class="tip mt-6 p-4 bg-blue-50 rounded-lg border border-blue-200"><p class="text-blue-800 text-center">💡 提示：輸入任意電子郵件和密碼即可登入</p></div>
+            <div class="tip mt-6 p-4 bg-blue-50 rounded-lg border border-blue-200"><p class="text-blue-800 text-center">💡 提示：請輸入正確格式的電子郵件與至少 6 碼密碼即可登入</p></div>
           </form>
         </div>
       </div>

@@ -1,11 +1,5 @@
-<script setup lang="ts">
-import LoginView from './components/LoginView.vue'
-
-function handleLogin(payload: { email: string; password: string; rememberMe: boolean }) {
-  console.log('login submit', payload)
-}
-</script>
+<script setup lang="ts"></script>
 
 <template>
-  <LoginView @submit="handleLogin" />
+  <RouterView />
 </template>
