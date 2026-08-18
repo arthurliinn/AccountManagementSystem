@@ -126,8 +126,9 @@ function handleSubmit() {
             >
               登入
             </button>
-            <div class="tip mt-6 p-4 bg-blue-50 rounded-lg border border-blue-200"><p class="text-blue-800 text-center">💡 提示：請輸入正確格式的電子郵件與至少 6 碼密碼即可登入</p></div>
+            <div class="tip mt-6 p-4 bg-blue-50 rounded-lg border border-blue-200"><p class="text-blue-800 text-center">💡提示：輸入任意電子郵件和密碼即可登入</p></div>
           </form>
+          <p class="text-center mt-6 text-gray-600">還沒有帳號？ <a href="#" class="text-indigo-600 hover:text-indigo-700">立即註冊</a></p>
         </div>
       </div>
     </div>
